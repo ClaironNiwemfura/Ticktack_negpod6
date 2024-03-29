@@ -1,3 +1,9 @@
+# Global variables
+event_name = ''
+start_date = ''
+end_date = ''
+description=''
+
 def create_event():
     """Create a new event."""
     event_name = input('Enter event name: ')
@@ -36,8 +42,15 @@ def create_event():
     # Missing database to store the event information
 
 def update_event():
-    print("Updating an event...")
-
+"""Update an existing event."""
+    #List the existing  events for user to select one to update
+    pass
+    #After chosing the event to update, you will start to update the event 
+    event_name = input('Enter updated event name: ')
+    start_date = input('Enter updated the starting date (YYYY-MM-DD): ')
+    end_date = input('Enter updated the ending date (YYYY-MM-DD): ')
+    description = input('Enter updated brief description of the event:\n')
+    
 def delete_event():
     print("Deleting an event...")
 
