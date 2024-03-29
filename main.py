@@ -1,5 +1,25 @@
 def create_event():
-    print("Creating an event...")
+    """Create a new event."""
+    event_name = input('Enter event name: ')
+    start_date = input('Enter the starting date (YYYY-MM-DD): ')
+    end_date = input('Enter the ending date (YYYY-MM-DD): ')
+    description = input('Enter a brief description of the event:\n')
+
+    # Check if dates are valid and in correct format.
+    try:
+        from datetime import datetime
+        sdatetime = datetime.strptime(start_date, '%Y-%m-%d')
+        edatetime = datetime.strptime(end_date, '%Y-%m-%d')
+    except ValueError:
+        print("Incorrect data format, please use YYYY-MM-DD")
+        return create_event()
+
+    if sdatetime > edatetime:
+        print("The start date must be before the end date.")
+        return create_event()
+    print("\nEvent created successfully!")
+    
+    # Missing database to store the event information
 
 def update_event():
     print("Updating an event...")
