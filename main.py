@@ -42,7 +42,7 @@ def create_event():
     # Missing database to store the event information
 
 def update_event():
-"""Update an existing event."""
+    """Update an existing event."""
     #List the existing  events for user to select one to update
     pass
     #After chosing the event to update, you will start to update the event 
