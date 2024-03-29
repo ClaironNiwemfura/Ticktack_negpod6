@@ -16,4 +16,7 @@ def display_message(choice):
     print(menu_options[choice])
   else:
     print("Invalid option. Please choose a valid number from the menu.")
-
+# Example usage (optional, for testing purposes)
+if __name__ == "__main__":
+  user_choice = int(input("Enter your choice (2,3): "))
+  display_message(user_choice)
