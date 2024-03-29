@@ -16,7 +16,21 @@ def create_event():
 
     if sdatetime > edatetime:
         print("The start date must be before the end date.")
-        return create_event()
+        return end_date
+    # Preview the event details
+    print('\nEvent Details:')
+    print(f'Name: {event_name}')
+    print(f'Start Date: {sdatetime.date()}')
+    print(f'End Date: {edatetime.date()}')
+    print(f"Description: \n{description}")
+
+    confirmation = input("\nIs this information correct? y/n\n").lower()
+    while confirmation not in ['y', 'yes']:
+        if confirmation == 'n':
+            return create_event()
+        else:
+            break
+
     print("\nEvent created successfully!")
     
     # Missing database to store the event information
