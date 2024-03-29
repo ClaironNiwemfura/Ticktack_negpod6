@@ -6,6 +6,7 @@ description=''
 
 def create_event():
     """Create a new event."""
+    global event_name, start_date, end_date, description
     event_name = input('Enter event name: ')
     start_date = input('Enter the starting date (YYYY-MM-DD): ')
     end_date = input('Enter the ending date (YYYY-MM-DD): ')
@@ -43,6 +44,7 @@ def create_event():
 
 def update_event():
     """Update an existing event."""
+    global event_name, start_date, end_date, description
     #List the existing  events for user to select one to update
     pass
     #After chosing the event to update, you will start to update the event 
