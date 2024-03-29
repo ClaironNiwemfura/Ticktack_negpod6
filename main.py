@@ -64,6 +64,5 @@ def event_menu():
             break
         else:
             print("Invalid choice. Please try again.")
-
 if __name__ == "__main__":
     main_menu()
