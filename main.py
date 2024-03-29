@@ -19,7 +19,7 @@ def see_statistics():
 def main_menu():
     while True:
         print("\nMain Menu:")
-        print("--------------")
+        print("-------------")
         print("1. Create and Manage an event")
         print("2. Start a timer")
         print("3. See your statistics")
@@ -42,7 +42,7 @@ def main_menu():
 def event_menu():
     while True:
         print("\nEvent Menu:")
-        print("-----------")
+        print("----------")
         print("1. Create an event")
         print("2. Update an event")
         print("3. Delete an event")
