@@ -75,18 +75,7 @@ def list_timers():
     cursor.execute("SELECT start_date, end_date FROM timers ORDER BY start_date")
     timers = cursor.fetchall()
 
-    # Check if there are timers
-    if len(timers) == 0:
-        print("No timers stored in the database.")
-    else:
-        print("List of Timers:")
-        for timer in timers:
-            start_date = datetime.strptime(timer[0], "%Y-%m-%d %H:%M:%S")
-            end_date = datetime.strptime(timer[1], "%Y-%m-%d %H:%M:%S")
-            print(f"Start Date: {start_date}, End Date: {end_date}")
-
-    # Close the database connection
-    conn.close()
+   
 
 def delete_event():
     print("\nDeleting an event...")
