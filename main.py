@@ -85,7 +85,8 @@ def list_timers():
             end_date = datetime.strptime(timer[1], "%Y-%m-%d %H:%M:%S")
             print(f"Start Date: {start_date}, End Date: {end_date}")
 
-  
+    # Close the database connection
+    conn.close()
 
 def delete_event():
     print("\nDeleting an event...")
