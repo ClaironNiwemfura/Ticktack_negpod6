@@ -1,9 +1,15 @@
+from datetime import datetime 
+
 # Global variables
 event_name = ''
 start_date = ''
 end_date = ''
 description=''
 
+start_time = None
+
+# Function to create event
+#-------------------------
 def create_event():
     """Create a new event."""
     global event_name, start_date, end_date, description
@@ -42,6 +48,8 @@ def create_event():
     
     # Missing database to store the event information
 
+# Function to Update event
+#-------------------------
 def update_event():
     """Update an existing event."""
     global event_name, start_date, end_date, description
@@ -62,15 +70,35 @@ def set_priority_event():
 
 def see_statistics():
     print("\nViewing statistics...")
-    
+ 
+ 
+ 
+ # Function to start timer
+#-------------------------  
 def start_timer():
-    print("\nStarting a timer...")
-    
+    global start_time
+    start_time = datetime.now()
+    print("\nTimer started at:", start_time)
+
+# Function to stop timer
+#-------------------------
 def stop_timer():
-    print("\nStopping a timer...")
+    global start_time
+    if start_time:
+        end_time = datetime.now()
+        print("Timer stopped at:", end_time)
+        elapsed_time = end_time - start_time
+        print("Elapsed time:", elapsed_time)
+        start_time = None
+    else:
+        print("\nTimer hasn't been started yet.")
     
 def see_open_timers():
     print("\nViewing open timers...")
+    
+    
+    
+
 
 def main_menu():
     while True:
