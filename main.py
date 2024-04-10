@@ -1,9 +1,15 @@
+from datetime import datetime 
+
 # Global variables
 event_name = ''
 start_date = ''
 end_date = ''
 description=''
 
+start_time = None
+
+# Function to create event
+#-------------------------
 def create_event():
     """Create a new event."""
     global event_name, start_date, end_date, description
@@ -42,6 +48,8 @@ def create_event():
     
     # Missing database to store the event information
 
+# Function to Update event
+#-------------------------
 def update_event():
     """Update an existing event."""
     global event_name, start_date, end_date, description
@@ -54,16 +62,43 @@ def update_event():
     description = input('Enter updated brief description of the event:\n')
     
 def delete_event():
-    print("Deleting an event...")
+    print("\nDeleting an event...")
 
 def set_priority_event():
-    print("Setting priority for an event...")
+    print("\nSetting priority for an event...")
 
-def start_timer():
-    print("Starting a timer...")
 
 def see_statistics():
-    print("Viewing statistics...")
+    print("\nViewing statistics...")
+ 
+ 
+ 
+ # Function to start timer
+#-------------------------  
+def start_timer():
+    global start_time
+    start_time = datetime.now()
+    print("\nTimer started at:", start_time)
+
+# Function to stop timer
+#-------------------------
+def stop_timer():
+    global start_time
+    if start_time:
+        end_time = datetime.now()
+        print("Timer stopped at:", end_time)
+        elapsed_time = end_time - start_time
+        print("Elapsed time:", elapsed_time)
+        start_time = None
+    else:
+        print("\nTimer hasn't been started yet.")
+    
+def see_open_timers():
+    print("\nViewing open timers...")
+    
+    
+    
+
 
 def main_menu():
     while True:
@@ -79,7 +114,7 @@ def main_menu():
         if choice == '1':
             event_menu()
         elif choice == '2':
-            start_timer()
+            timer_menu()
         elif choice == '3':
             see_statistics()
         elif choice == '4':
@@ -109,6 +144,31 @@ def event_menu():
         elif choice == '4':
             set_priority_event()
         elif choice == '5':
+            print("Returning to Main Menu...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+    
+def timer_menu():
+    while True:
+        print("\nTimer Menu:")
+        print("----------")
+        print("1. Start a timer")
+        print("2. Stop a timer")
+        print("3. See the Open Timers")
+        print("4. Back to Main Menu")
+       
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            start_timer()
+        elif choice == '2':
+            stop_timer()
+        elif choice == '3':
+            see_open_timers()     
+        elif choice == '4':
             print("Returning to Main Menu...")
             break
         else:
