@@ -14,6 +14,7 @@ start_time = None
 def create_event():
     """Create a new event."""
     global event_name, start_date, end_date, description
+    
     event_name = input('Enter event name: ')
     start_date = input('Enter the starting date (YYYY-MM-DD): ')
     end_date = input('Enter the ending date (YYYY-MM-DD): ')
@@ -52,7 +53,8 @@ def create_event():
     cursor = conn.cursor()
     
     # Insert event details into the database
-    cursor.execute("INSERT INTO events (event_name, start_date, end_date, description) VALUES (?, ?, ?, ?)", (event_name, start_date, end_date, description))
+    cursor.execute("INSERT INTO events (event_name, start_date, end_date, description) VALUES (?, ?, ?, ?)",
+            (event_name, start_date, end_date, description))
     conn.commit()
     
     # Close the database connection
@@ -64,8 +66,18 @@ def create_event():
 def update_event():
     """Update an existing event."""
     global event_name, start_date, end_date, description
-    #List the existing  events for user to select one to update
-    pass
+      # Connect to the database
+    conn = sqlite3.connect('events.db')
+    cursor = conn.cursor()
+
+    # List existing events for user to select one to update
+    cursor.execute("SELECT * FROM events")
+    events = cursor.fetchall()
+
+    print("Existing Events:")
+    for event in events:
+        print(f"Event ID: {event[0]}, Name: {event[1]}, Start Date: {event[2]}, End Date: {event[3]}")
+
     #After chosing the event to update, you will start to update the event 
    event_id = input('Enter the ID of the event you want to update: ')
    event_name = input('Enter updated event name: ')
