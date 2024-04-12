@@ -107,6 +107,7 @@ def start_timer():
     start_time = datetime.now()
     print("\nTimer started at:", start_time)
 
+
 # Function to stop timer
 #-------------------------
 def stop_timer():
@@ -115,17 +116,27 @@ def stop_timer():
         end_time = datetime.now()
         print("Timer stopped at:", end_time)
         elapsed_time = end_time - start_time
-        print("Elapsed time:", elapsed_time)
+        total_seconds = elapsed_time.total_seconds()
+        hours = total_seconds // 3600
+        print("Elapsed time:", hours, "hours")
+
+         # Display message based on elapsed hours
+        if hours > 4:
+            print("Impressive feat")
+        elif hours == 4:
+            print("That's great")
+        elif 2 <= hours <= 4:
+            print("You sure you don't want to go for another round?")
+        elif hours < 2:
+            print("Hope you finished")
+
         start_time = None
     else:
         print("\nTimer hasn't been started yet.")
+
     
 def see_open_timers():
     print("\nViewing open timers...")
-    
-    
-    
-
 
 def main_menu():
     while True:
