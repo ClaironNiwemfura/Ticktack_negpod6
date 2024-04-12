@@ -47,7 +47,17 @@ def create_event():
 
     print("\nEvent created successfully!")
     
-    # Missing database to store the event information
+      # Connect to the database
+    conn = sqlite3.connect('events.db')
+    cursor = conn.cursor()
+    
+    # Insert event details into the database
+    cursor.execute("INSERT INTO events (event_name, start_date, end_date, description) VALUES (?, ?, ?, ?)", (event_name, start_date, end_date, description))
+    conn.commit()
+    
+    # Close the database connection
+    conn.close()
+
 
 # Function to Update event
 #-------------------------
@@ -57,7 +67,8 @@ def update_event():
     #List the existing  events for user to select one to update
     pass
     #After chosing the event to update, you will start to update the event 
-    event_name = input('Enter updated event name: ')
+   event_id = input('Enter the ID of the event you want to update: ')
+   event_name = input('Enter updated event name: ')
     start_date = input('Enter updated the starting date (YYYY-MM-DD): ')
     end_date = input('Enter updated the ending date (YYYY-MM-DD): ')
     description = input('Enter updated brief description of the event:\n')
@@ -81,9 +92,10 @@ def list_timers():
     else:
         print("List of Timers:")
         for timer in timers:
+            timer_id = timer[0]
             start_date = datetime.strptime(timer[0], "%Y-%m-%d %H:%M:%S")
             end_date = datetime.strptime(timer[1], "%Y-%m-%d %H:%M:%S")
-            print(f"Start Date: {start_date}, End Date: {end_date}")
+            print(f"Timer ID: {timer_id},Start Date: {start_date}, End Date: {end_date}")
 
     # Close the database connection
     conn.close()
