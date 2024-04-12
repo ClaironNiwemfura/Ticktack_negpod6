@@ -1,3 +1,4 @@
+import sqlite3
 from datetime import datetime 
 
 # Global variables
@@ -60,7 +61,33 @@ def update_event():
     start_date = input('Enter updated the starting date (YYYY-MM-DD): ')
     end_date = input('Enter updated the ending date (YYYY-MM-DD): ')
     description = input('Enter updated brief description of the event:\n')
-    
+
+
+ # Function to list available timer from database
+    #--------------------------------------------
+def list_timers():
+    # Connect to the database. Assume the database named is 'timers.db'
+
+    conn = sqlite3.connect('timers.db')
+    cursor = conn.cursor()
+
+    # Fetch all timers sorted by start_date
+    cursor.execute("SELECT start_date, end_date FROM timers ORDER BY start_date")
+    timers = cursor.fetchall()
+
+    # Check if there are timers
+    if len(timers) == 0:
+        print("No timers stored in the database.")
+    else:
+        print("List of Timers:")
+        for timer in timers:
+            start_date = datetime.strptime(timer[0], "%Y-%m-%d %H:%M:%S")
+            end_date = datetime.strptime(timer[1], "%Y-%m-%d %H:%M:%S")
+            print(f"Start Date: {start_date}, End Date: {end_date}")
+
+    # Close the database connection
+    conn.close()
+
 def delete_event():
     print("\nDeleting an event...")
 
