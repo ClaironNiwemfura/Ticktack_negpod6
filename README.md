@@ -4,3 +4,4 @@ To run this application, make sure you have the following installed:
 1. `python1`
 2. `psycopg2` to install it use `pip install psycopg2`
 3. `postgreSQL` Here is a link for guidance `https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql`
+After installing all necessary tools, modify db-configuration to pass your local db authentication
