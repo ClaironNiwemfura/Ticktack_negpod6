@@ -86,7 +86,7 @@ def update_event():
 
 
  # Function to list available timer from database
-    #--------------------------------------------
+#--------------------------------------------
 def list_timers():
     # Connect to the database. Assume the database named is 'timers.db'
 
@@ -116,11 +116,14 @@ def delete_event():
 def set_priority_event():
     print("\nSetting priority for an event...")
 
+def see_All_events():
+    print("\nViewing all events...")
 
 def see_statistics():
     print("\nViewing statistics...")
  
- 
+
+
  
  # Function to start timer
 #-------------------------  
@@ -128,6 +131,7 @@ def start_timer():
     global start_time
     start_time = datetime.now()
     print("\nTimer started at:", start_time)
+
 
 # Function to stop timer
 #-------------------------
@@ -137,24 +141,34 @@ def stop_timer():
         end_time = datetime.now()
         print("Timer stopped at:", end_time)
         elapsed_time = end_time - start_time
-        print("Elapsed time:", elapsed_time)
+        total_seconds = elapsed_time.total_seconds()
+        hours = total_seconds // 3600
+        print("Elapsed time:", hours, "hours")
+
+         # Display message based on elapsed hours
+        if hours > 4:
+            print("Impressive feat")
+        elif hours == 4:
+            print("That's great")
+        elif 2 <= hours <= 4:
+            print("You sure you don't want to go for another round?")
+        elif hours < 2:
+            print("Hope you finished")
+
         start_time = None
     else:
         print("\nTimer hasn't been started yet.")
+
     
 def see_open_timers():
     print("\nViewing open timers...")
-    
-    
-    
-
 
 def main_menu():
     while True:
         print("\nMain Menu:")
         print("-------------")
         print("1. Create and Manage an event")
-        print("2. Start a timer")
+        print("2. Manage your timer")
         print("3. See your statistics")
         print("4. Exit")
 
@@ -179,9 +193,10 @@ def event_menu():
         print("----------")
         print("1. Create an event")
         print("2. Update an event")
-        print("3. Delete an event")
+        print("3. Delete an event")        
         print("4. Set priority for an event")
-        print("5. Back to Main Menu")
+        print("5. See all events")
+        print("6. Back to Main Menu")
 
         choice = input("Enter your choice: ")
 
@@ -194,6 +209,8 @@ def event_menu():
         elif choice == '4':
             set_priority_event()
         elif choice == '5':
+            see_All_events()
+        elif choice == '6':
             print("Returning to Main Menu...")
             break
         else:
