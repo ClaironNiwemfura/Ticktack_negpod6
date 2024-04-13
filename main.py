@@ -3,12 +3,18 @@ from datetime import datetime
 import re
 
 # Example use of dbConfig connection
-from dbConfig import conn
+# from dbConfig import conn
 
+from dbConfig import conn, cur 
+
+# Example use of dbConfig connection
+# from dbConfig import conn
+cur = conn.cursor() 
 # # statements eg cursor.execute("SELECT * FROM events")
 # conn.commit()
 # cursor.close()
 # conn.close()
+
 
 
 # Global variables
@@ -17,7 +23,10 @@ start_date = ''
 end_date = ''
 description=''
 
+timer_id = None
 start_time = None
+
+
 
 # Function to create event
 #-------------------------
@@ -113,9 +122,6 @@ def list_timers():
 def delete_event():
     print("\nDeleting an event...")
 
-def set_priority_event():
-    print("\nSetting priority for an event...")
-
 def see_All_events():
     print("\nViewing all events...")
 
@@ -127,41 +133,77 @@ def see_statistics():
  
  # Function to start timer
 #-------------------------  
+
 def start_timer():
+    global timer_id
     global start_time
+
+    # Get the current time as the start time
     start_time = datetime.now()
     print("\nTimer started at:", start_time)
 
+    # Insert the start time into the 'timers' table
+    cur.execute(
+        "INSERT INTO timers (from_time) VALUES (%s) RETURNING id",
+        (start_time,)
+    )
 
-# Function to stop timer
-#-------------------------
+    # Retrieve the generated ID (timer ID)
+    timer_id = cur.fetchone()[0]
+
+    # Commit the transaction to the database
+    conn.commit()
+
 def stop_timer():
+    global timer_id
     global start_time
-    if start_time:
-        end_time = datetime.now()
-        print("Timer stopped at:", end_time)
-        elapsed_time = end_time - start_time
-        total_seconds = elapsed_time.total_seconds()
-        hours = total_seconds // 3600
-        print("Elapsed time:", hours, "hours")
 
-         # Display message based on elapsed hours
-        if hours > 4:
-            print("Impressive feat")
-        elif hours == 4:
-            print("That's great")
-        elif 2 <= hours <= 4:
-            print("You sure you don't want to go for another round?")
-        elif hours < 2:
-            print("Hope you finished")
+    # Check if a timer was started
+    if timer_id is None:
+        print("Timer hasn't been started yet.")
+        return
 
-        start_time = None
-    else:
-        print("\nTimer hasn't been started yet.")
+    # Get the current time as the end time
+    end_time = datetime.now()
+    print("\nTimer stopped at:", end_time)
 
+    # Calculate the elapsed time
+    elapsed_time = end_time - start_time
+    print("Elapsed time:", elapsed_time)
+
+    # Update the 'timers' table with the end time
+    cur.execute(
+        "UPDATE timers SET to_time = %s WHERE id = %s",
+        (end_time, timer_id)
+    )
+
+    # Commit the transaction to the database
+    conn.commit()
+
+    # Reset the timer ID and start time
+    timer_id = None
+    start_time = None
     
-def see_open_timers():
-    print("\nViewing open timers...")
+def timer_history():
+    print("\nViewing timer history...")
+    
+    # Query to fetch all records from the 'timers' table
+    cur.execute("SELECT * FROM timers")
+    
+    # Fetch all rows from the query
+    timers = cur.fetchall()
+    
+    # Print the header
+    print("ID | Start Time | End Time")
+    print("-" * 30)
+    
+    # Iterate through all timers and print each one
+    for timer in timers:
+        id, from_time, to_time = timer
+        print(f"{id} | {from_time} | {to_time}")
+        
+    
+    
 
 def main_menu():
     while True:
@@ -193,10 +235,9 @@ def event_menu():
         print("----------")
         print("1. Create an event")
         print("2. Update an event")
-        print("3. Delete an event")        
-        print("4. Set priority for an event")
-        print("5. See all events")
-        print("6. Back to Main Menu")
+        print("3. Delete an event")      
+        print("4. See all events")
+        print("5. Back to Main Menu")
 
         choice = input("Enter your choice: ")
 
@@ -207,12 +248,10 @@ def event_menu():
         elif choice == '3':
             delete_event()
         elif choice == '4':
-            set_priority_event()
-        elif choice == '5':
             see_All_events()
-        elif choice == '6':
+        elif choice == '5':
             print("Returning to Main Menu...")
-            break
+            break            
         else:
             print("Invalid choice. Please try again.")
 
@@ -223,7 +262,7 @@ def timer_menu():
         print("----------")
         print("1. Start a timer")
         print("2. Stop a timer")
-        print("3. See the Open Timers")
+        print("3. timer history")
         print("4. Back to Main Menu")
        
 
@@ -234,7 +273,7 @@ def timer_menu():
         elif choice == '2':
             stop_timer()
         elif choice == '3':
-            see_open_timers()     
+            timer_history()     
         elif choice == '4':
             print("Returning to Main Menu...")
             break
