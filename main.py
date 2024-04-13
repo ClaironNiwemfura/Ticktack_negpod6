@@ -1,6 +1,16 @@
 import sqlite3
 from datetime import datetime 
 
+
+# Example use of dbConfig connection
+# from dbConfig import conn
+# cursor = conn.cursor()
+# # statements
+# conn.commit()
+# cursor.close()
+# conn.close()
+
+
 # Global variables
 event_name = ''
 start_date = ''
