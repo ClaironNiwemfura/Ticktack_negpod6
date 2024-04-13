@@ -1,14 +1,10 @@
 #remember to install psycopg2
 import psycopg2
-host="localhost"
-database="ticktack"
-user="postgres"
-password="password"
 conn = psycopg2.connect(
-    host=host,
-    database=database,
-    user=user,
-    password=password
+    host="localhost",
+    database="ticktack",
+    user="postgres",
+    password="password"
 )
 
 #open cursor to perform db operations
