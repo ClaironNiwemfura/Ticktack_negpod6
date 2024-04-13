@@ -4,7 +4,7 @@ conn = psycopg2.connect(
     host="localhost",
     database="ticktack",
     user="postgres",
-    password="postgres"
+    password="password"
 )
 
 #open cursor to perform db operations
