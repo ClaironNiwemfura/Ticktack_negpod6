@@ -4,8 +4,8 @@ from datetime import datetime
 
 # Example use of dbConfig connection
 # from dbConfig import conn
-# cursor = conn.cursor()
-# # statements
+# cursor = conn.cursor() 
+# # statements eg cursor.execute("SELECT * FROM events")
 # conn.commit()
 # cursor.close()
 # conn.close()
