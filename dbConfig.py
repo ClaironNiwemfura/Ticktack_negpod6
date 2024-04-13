@@ -3,7 +3,7 @@ import psycopg2
 host="localhost"
 database="ticktack"
 user="postgres"
-password="password"
+password="postgres"
 conn = psycopg2.connect(
     host=host,
     database=database,
@@ -38,4 +38,4 @@ conn.commit()
 
 # close cursor and disconnect from database
 cur.close()
-conn.close()
+# conn.close()
