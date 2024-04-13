@@ -179,6 +179,7 @@ def delete_event():
 
 
 def view_all_events():
+    """Viewing all events"""
     cursor = conn.cursor()
     try:
         sql = "SELECT * FROM events"
@@ -202,9 +203,6 @@ def view_all_events():
 
 def see_statistics():
     print("\nViewing statistics...")
- 
-
-
  
  # Function to start timer
 #-------------------------  
