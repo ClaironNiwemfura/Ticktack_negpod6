@@ -168,8 +168,45 @@ def delete_event():
         print("| {:<10} | {:<10} | {:<15} | {:<10} | {:<10} |".format(record[0], record[1], record[2], record[3].strftime("%Y-%m-%d %H:%M"),record[4].strftime("%Y-%m-%d %H:%M")))
         confirmation = input("Is this the record you want to delete?y/n\n").lower()
 
-def see_All_events():
-    print("\nViewing all events...")
+        if confirmation == 'n':
+            return delete_event()
+        else:
+            sql = "DELETE FROM events WHERE id = "+ev_id  
+            print("query: ",sql)
+            print("\nEvent removed Successfully!")
+            cursor.execute(sql)
+            conn.commit()
+            
+        
+        
+    except Exception as e:
+        print("There was an error: ",e," try again")
+        return event_menu()
+    cursor.close()
+
+
+def view_all_events():
+    """Viewing all events"""
+    cursor = conn.cursor()
+    try:
+        sql = "SELECT * FROM events"
+        print("query: ",sql)
+        cursor.execute(sql)
+        event_list = cursor.fetchall()
+        print("Event list: ",event_list,"\n\n")
+        # Print table header
+        print("| {:<10} | {:<20} | {:<15} | {:<10} | {:<10} |".format("Event ID", "Event Name","Event Description", "Event Start Time", "Event End Time"))
+        print("-" * 98)
+
+        # Print rows in a table format
+        for row in event_list:
+            # print(row[3].strftime("%Y-%m-%d %H:%M"))
+            print("| {:<10} | {:<10} | {:<15} | {:<10} | {:<10} |".format(row[0], row[1], row[2], row[3].strftime("%Y-%m-%d %H:%M"),row[4].strftime("%Y-%m-%d %H:%M")))
+        conn.commit()               
+    except Exception as e:
+        print("There was an error: ",e," try again")
+        return view_all_events()
+    cursor.close()
 
 def see_statistics():
     print("\n...Your Statistics...")
@@ -205,9 +242,6 @@ def see_statistics():
         print("You need to work harder today.")
     else:
         print("You have had moderate performance today.")
- 
-
-
  
  # Function to start timer
 #-------------------------  
