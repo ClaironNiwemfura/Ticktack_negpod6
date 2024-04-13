@@ -10,7 +10,7 @@ def delete_event(event_id):
     connection = None
     cursor = None
     try:
-        connection = sqlite3.connect('study_tracker.db')
+        connection = sqlite3.connect('ticktack.db')
         cursor = connection.cursor()
 
         cursor.execute("DELETE FROM events WHERE event_id=?", (event_id,))

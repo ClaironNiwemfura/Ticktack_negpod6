@@ -12,7 +12,7 @@ def set_event_priority(event_id, is_priority):
     connection = None
     cursor = None
     try:
-        connection = sqlite3.connect('study_tracker.db')
+        connection = sqlite3.connect('ticktack.db')
         cursor = connection.cursor()
 
         priority_value = 1 if is_priority else 0
