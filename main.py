@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime 
+from datetime import datetime, timedelta
 import re
 
 # Example use of dbConfig connection
@@ -126,7 +126,39 @@ def see_All_events():
     print("\nViewing all events...")
 
 def see_statistics():
-    print("\nViewing statistics...")
+    print("\n...Your Statistics...")
+
+    # Query to fetch all records from the 'timers' table
+    cur.execute("SELECT from_time, to_time FROM timers")
+
+    # Fetch all rows from the query
+    timers = cur.fetchall()
+
+    # Calculate the total elapsed time for all timers
+    total_elapsed_time = timedelta()  # Start with a timedelta of zero
+
+    # Iterate through all timers and calculate elapsed time
+    for from_time, to_time in timers:
+        if to_time is None:  # If the timer has not been stopped yet, ignore it
+            continue
+
+        # Calculate elapsed time for each timer
+        elapsed_time = to_time - from_time
+        total_elapsed_time += elapsed_time
+
+    # Convert the total elapsed time to total hours
+    total_hours = total_elapsed_time.total_seconds() / 3600  # Convert seconds to hours
+
+    # Print total elapsed time in a readable format
+    print(f"Total elapsed time: {total_hours:.2f} hours")
+
+    # Determine productivity based on total elapsed time
+    if total_hours > 5:
+        print("You have been very productive today!")
+    elif total_hours < 1:
+        print("You need to work harder today.")
+    else:
+        print("You have had moderate performance today.")
  
 
 
