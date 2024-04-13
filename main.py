@@ -13,19 +13,42 @@ from dbConfig import conn
 
 # Global variables
 event_name = ''
-start_date = ''
-end_date = ''
+start_time = ''
+end_time = ''
 description=''
 
 start_time = None
 
+
+ # Function to list available timer from database
+#--------------------------------------------
+def list_timers():
+    # Connect to the database. Assume the database named is 'timers.db'
+
+    conn = sqlite3.connect('timers.db')
+    cursor = conn.cursor()
+    
+    # Fetch all timers sorted by start_time
+    cursor.execute("SELECT start_time, end_time FROM timers ORDER BY start_time")
+    timers = cursor.fetchall()
+
+    # Check if there are timers
+    if len(timers) == 0:
+        print("No timers stored in the database.")
+    else:
+        print("List of Timers:")
+        for timer in timers:
+            start_time = datetime.strptime(timer[0], "%Y-%m-%d %H:%M:%S")
+            end_time = datetime.strptime(timer[1], "%Y-%m-%d %H:%M:%S")
+            print(f"Start Date: {start_time}, End Date: {end_time}")
+
+    # Close the database connection
+    conn.close()
 # Function to create event
 #-------------------------
 def create_event():
     cursor = conn.cursor()
     """Create a new event."""
-    # global event_name, start_date, end_date, description
-    # dateFormat = "^20([0-9][0-9])( )(0?[1-9]|10|11|12)( )(3[0-1]|[1-2][0-9]|0?[1-9])( )([2][1-4]|[1][1-9]|0?[1-9])(:)(0?[1-9]|[1-5][1-9])"
     dateFormat = r'^20\d{2} (0[1-9]|1[0-2]) (0[1-9]|[12]\d|3[01]) (2[0-3]|[01]\d)\:[0-5]\d'
 
     event_name = input('Enter event name: ')
@@ -35,7 +58,7 @@ def create_event():
         if re.match(dateFormat, start_time):
             break
         else:
-             print("Incorrect time format! Please check the format and try again.",dateFormat,start_date)
+             print("Incorrect time format! Please check the format and try again.",dateFormat,start_time)
     while True:
         end_time = input('Enter the Ending date (YY MM DD HH:MI): ')
         numstart = int(start_time.replace(" ","").replace(":",""))
@@ -44,11 +67,7 @@ def create_event():
             break
         else:
             print("Start time should be less than end time. Please check the format and try again.")
-    
-
-    # Check if dates are valid and in correct format.
     try:
-        print("\nEvent created successfully!")
         print('\nEvent Details:')
         print(f'Name: {event_name}')
         print(f"Description: \n{description}")
@@ -60,6 +79,7 @@ def create_event():
         else:
             sql = "INSERT INTO events(name, description,from_time, to_time) VALUES('"+event_name+"','"+description+"','"+start_time+"','"+end_time+"')"  
             print("query: ",sql)
+            print("\nEvent created successfully!")
             cursor.execute(sql)
             conn.commit()
             
@@ -67,57 +87,118 @@ def create_event():
         
     except Exception as e:
         print("There was an error: ",e," try again")
-        return create_event()
+        return event_menu()
     cursor.close()
 
 
 # Function to Update event
 #-------------------------
 def update_event():
-    """Update an existing event."""
-    global event_name, start_date, end_date, description
-    #List the existing  events for user to select one to update
-    pass
-    #After chosing the event to update, you will start to update the event 
-    event_name = input('Enter updated event name: ')
-    start_date = input('Enter updated the starting date (YYYY-MM-DD): ')
-    end_date = input('Enter updated the ending date (YYYY-MM-DD): ')
-    description = input('Enter updated brief description of the event:\n')
-
-
- # Function to list available timer from database
-#--------------------------------------------
-def list_timers():
-    # Connect to the database. Assume the database named is 'timers.db'
-
-    conn = sqlite3.connect('timers.db')
     cursor = conn.cursor()
-    
-    # Fetch all timers sorted by start_date
-    cursor.execute("SELECT start_date, end_date FROM timers ORDER BY start_date")
-    timers = cursor.fetchall()
+    try:
+        """Update an existing event."""
+        ev_id = input("Enter the id of event you want to change: ")
+        sql = "SELECT * FROM events WHERE id ="+ev_id
+        cursor.execute(sql) 
+        if not cursor.fetchone():
+            print("Event with id", ev_id," not found. Refer to the list of events!")
+            return event_menu()
+        dateFormat = r'^20\d{2} (0[1-9]|1[0-2]) (0[1-9]|[12]\d|3[01]) (2[0-3]|[01]\d)\:[0-5]\d'
 
-    # Check if there are timers
-    if len(timers) == 0:
-        print("No timers stored in the database.")
-    else:
-        print("List of Timers:")
-        for timer in timers:
-            start_date = datetime.strptime(timer[0], "%Y-%m-%d %H:%M:%S")
-            end_date = datetime.strptime(timer[1], "%Y-%m-%d %H:%M:%S")
-            print(f"Start Date: {start_date}, End Date: {end_date}")
+        event_name = input('Enter event name: ')
+        description = input('Enter a brief description of the event:\n')
+        while True:
+            start_time = input('Enter the starting date (YY MM DD HH:MI): ')
+            if re.match(dateFormat, start_time):
+                break
+            else:
+                 print("Incorrect time format! Please check the format and try again.",dateFormat,start_time)
+        while True:
+            end_time = input('Enter the Ending date (YY MM DD HH:MI): ')
+            numstart = int(start_time.replace(" ","").replace(":",""))
+            numend = int(end_time.replace(" ","").replace(":",""))
+            if re.match(dateFormat, end_time)  and numstart < numend:
+                break
+            else:
+                print("Start time should be less than end time. Please check the format and try again.")
 
-    # Close the database connection
-    conn.close()
-
+        
+        print('\nEvent Details:')
+        print(f'Name: {event_name}')
+        print(f"Description: \n{description}")
+        print(f'Start Time: {start_time}')
+        print(f'End Time: {end_time}')
+        confirmation = input("\nIs this information correct? y/n\n").lower()
+        if confirmation == 'n':
+            return update_event()
+        else:
+            sql = "UPDATE events SET name = '"+event_name+"', description='"+description+"',from_time = '"+start_time+"', to_time = '"+end_time+"' WHERE id = "+ev_id  
+            print("query: ",sql)
+            print("\nEvent Updated Successfully!")
+            cursor.execute(sql)
+            conn.commit()
+            
+        
+        
+    except Exception as e:
+        print("There was an error: ",e," try again")
+        return event_menu()
+    cursor.close()
+# Function to delete event
 def delete_event():
-    print("\nDeleting an event...")
+    cursor = conn.cursor()
+    try:
+        """Delete an existing event."""
+        ev_id = input("Enter the id of event you want to delete: ")
+        sql = "SELECT * FROM events WHERE id ="+ev_id
+        cursor.execute(sql)
+        record = cursor.fetchone()
+        if not record:
+            print("Event with id", ev_id," not found. Refer to the list of events!")
+            return event_menu()
+        print("\n\n| {:<10} | {:<20} | {:<15} | {:<10} | {:<10} |".format("Event ID", "Event Name","Event Description", "Event Start Time", "Event End Time"))
+        print("-" * 98)
+        print("| {:<10} | {:<10} | {:<15} | {:<10} | {:<10} |".format(record[0], record[1], record[2], record[3].strftime("%Y-%m-%d %H:%M"),record[4].strftime("%Y-%m-%d %H:%M")))
+        confirmation = input("Is this the record you want to delete?y/n\n").lower()
 
-def set_priority_event():
-    print("\nSetting priority for an event...")
+        if confirmation == 'n':
+            return delete_event()
+        else:
+            sql = "DELETE FROM events WHERE id = "+ev_id  
+            print("query: ",sql)
+            print("\nEvent removed Successfully!")
+            cursor.execute(sql)
+            conn.commit()
+            
+        
+        
+    except Exception as e:
+        print("There was an error: ",e," try again")
+        return event_menu()
+    cursor.close()
 
-def see_All_events():
-    print("\nViewing all events...")
+
+def view_all_events():
+    cursor = conn.cursor()
+    try:
+        sql = "SELECT * FROM events"
+        print("query: ",sql)
+        cursor.execute(sql)
+        event_list = cursor.fetchall()
+        print("Event list: ",event_list,"\n\n")
+        # Print table header
+        print("| {:<10} | {:<20} | {:<15} | {:<10} | {:<10} |".format("Event ID", "Event Name","Event Description", "Event Start Time", "Event End Time"))
+        print("-" * 98)
+
+        # Print rows in a table format
+        for row in event_list:
+            # print(row[3].strftime("%Y-%m-%d %H:%M"))
+            print("| {:<10} | {:<10} | {:<15} | {:<10} | {:<10} |".format(row[0], row[1], row[2], row[3].strftime("%Y-%m-%d %H:%M"),row[4].strftime("%Y-%m-%d %H:%M")))
+        conn.commit()               
+    except Exception as e:
+        print("There was an error: ",e," try again")
+        return view_all_events()
+    cursor.close()
 
 def see_statistics():
     print("\nViewing statistics...")
@@ -193,10 +274,9 @@ def event_menu():
         print("----------")
         print("1. Create an event")
         print("2. Update an event")
-        print("3. Delete an event")        
-        print("4. Set priority for an event")
-        print("5. See all events")
-        print("6. Back to Main Menu")
+        print("3. Delete an event")
+        print("4. See all events")
+        print("5. Back to Main Menu")
 
         choice = input("Enter your choice: ")
 
@@ -207,10 +287,8 @@ def event_menu():
         elif choice == '3':
             delete_event()
         elif choice == '4':
-            set_priority_event()
+            view_all_events()
         elif choice == '5':
-            see_All_events()
-        elif choice == '6':
             print("Returning to Main Menu...")
             break
         else:
