@@ -104,11 +104,14 @@ def delete_event():
 def set_priority_event():
     print("\nSetting priority for an event...")
 
+def see_All_events():
+    print("\nViewing all events...")
 
 def see_statistics():
     print("\nViewing statistics...")
  
- 
+
+
  
  # Function to start timer
 #-------------------------  
@@ -142,7 +145,7 @@ def main_menu():
         print("\nMain Menu:")
         print("-------------")
         print("1. Create and Manage an event")
-        print("2. Start a timer")
+        print("2. Manage your timer")
         print("3. See your statistics")
         print("4. Exit")
 
@@ -166,9 +169,10 @@ def event_menu():
         print("----------")
         print("1. Create an event")
         print("2. Update an event")
-        print("3. Delete an event")
+        print("3. Delete an event")        
         print("4. Set priority for an event")
-        print("5. Back to Main Menu")
+        print("5. See all events")
+        print("6. Back to Main Menu")
 
         choice = input("Enter your choice: ")
 
@@ -181,6 +185,8 @@ def event_menu():
         elif choice == '4':
             set_priority_event()
         elif choice == '5':
+            see_All_events()
+        elif choice == '6':
             print("Returning to Main Menu...")
             break
         else:
