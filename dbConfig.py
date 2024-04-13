@@ -29,8 +29,7 @@ cur.execute(""" CREATE TABLE IF NOT EXISTS timers(
 """)
 
 # some first record into our table that can be used to test
-# cur.execute("INSERT INTO events(name, description,from_time, to_time) VALUES('presentation','I will have a one-to-one presentation',TO_TIMESTAMP('2024 04 11 11:45','YY MM DD HH:MI'),TO_TIMESTAMP('2024 04 11 12:45','YY MM DD HH:MI'))")
-# cur.execute("INSERT INTO events(name, description, from_time, to_time) VALUES('meeting','I will have a meeting with my team',TO_TIMESTAMP('2024 04 11 10:00','YY MM DD HH:MI'),TO_TIMESTAMP('2024 04 11 11:30','YY MM DD HH:MI'))")
+# cur.execute("INSERT INTO events(name, description,from_time, to_time) VALUES('presentation','I will have a one-to-one presentation',TO_TIMESTAMP('2024 04 11 11:45','YY MM DD HH:MI'),TO_TIMESTAMP('2024 04 11 12:45','YY MM DD HH: MI'))")
 
 
 # #make changes to the database persistent
