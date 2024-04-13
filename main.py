@@ -74,7 +74,7 @@ def update_event():
 
 
  # Function to list available timer from database
-    #--------------------------------------------
+#--------------------------------------------
 def list_timers():
     # Connect to the database. Assume the database named is 'timers.db'
 
