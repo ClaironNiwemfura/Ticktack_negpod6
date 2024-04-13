@@ -1,5 +1,6 @@
 #remember to install psycopg2
-import psycopg2host="localhost"
+import psycopg2
+host="localhost"
 database="ticktack"
 user="postgres"
 password="password"
