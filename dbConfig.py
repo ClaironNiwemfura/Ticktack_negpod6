@@ -4,12 +4,18 @@ host="localhost"
 database="ticktack"
 user="postgres"
 password="passfox123"
-conn = psycopg2.connect(
+try:
+    conn = psycopg2.connect(
     host=host,
     database=database,
     user=user,
     password=password
-)
+   )
+   print("Successfully connected to the database.")
+except psycopg2.OperationalError as e:
+    print(f"Error: Unable to connect to the database - {e}")
+    exit()
+
 #open cursor to perform db operations
 cur = conn.cursor()
 cur.execute(""" CREATE TABLE IF NOT EXISTS events(
