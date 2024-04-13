@@ -3,7 +3,7 @@ import psycopg2
 host="localhost"
 database="ticktack"
 user="postgres"
-password="postgres"
+password="passfox123"
 conn = psycopg2.connect(
     host=host,
     database=database,
@@ -33,9 +33,9 @@ cur.execute(""" CREATE TABLE IF NOT EXISTS timers(
 # cur.execute("INSERT INTO events(name, description, from_time, to_time) VALUES('meeting','I will have a meeting with my team',TO_TIMESTAMP('2024 04 11 10:00','YY MM DD HH:MI'),TO_TIMESTAMP('2024 04 11 11:30','YY MM DD HH:MI'))")
 
 
-#make changes to the database persistent
-conn.commit()
+# #make changes to the database persistent
+# conn.commit()
 
-# close cursor and disconnect from database
-cur.close()
+# # close cursor and disconnect from database
+# cur.close()
 # conn.close()
