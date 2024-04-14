@@ -12,10 +12,6 @@ from dbConfig import conn, cur
 cur = conn.cursor() 
 # # statements eg cursor.execute("SELECT * FROM events")
 # conn.commit()
-# cursor.close()
-# conn.close()
-
-
 
 # Global variables
 event_name = ''
